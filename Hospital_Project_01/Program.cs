@@ -1,3 +1,5 @@
+using DAL.Data;
+
 namespace Hospital_Project_01
 {
     public class Program
@@ -6,9 +8,13 @@ namespace Hospital_Project_01
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            #region register services
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            builder.Services.AddDbContext<HospitalDbContext>(); 
+
+            #endregion
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

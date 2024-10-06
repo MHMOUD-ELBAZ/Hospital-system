@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL.Migrations
 {
-    [DbContext(typeof(HospitalDBContext))]
+    [DbContext(typeof(HospitalDbContext))]
     [Migration("20241006173414_CreateDb")]
     partial class CreateDb
     {

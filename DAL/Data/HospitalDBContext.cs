@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace DAL.Data
 {
-    public class HospitalDBContext : IdentityDbContext <AppUser>
+    public class HospitalDbContext : IdentityDbContext <AppUser>
     {
-        public HospitalDBContext(DbContextOptions options) : base(options)
+        public HospitalDbContext(DbContextOptions options) : base(options)
         {
             
         }
-        public HospitalDBContext(): base() { }
+        public HospitalDbContext(): base() { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

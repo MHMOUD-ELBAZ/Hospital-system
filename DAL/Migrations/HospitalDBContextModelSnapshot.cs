@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL.Migrations
 {
-    [DbContext(typeof(HospitalDBContext))]
+    [DbContext(typeof(HospitalDbContext))]
     partial class HospitalDBContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
