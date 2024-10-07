@@ -1,21 +1,25 @@
+using DAL.Data;
 using Hospital_Project_01.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace Hospital_Project_01.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly HospitalDbContext hospitalDbContext;
 
-        public HomeController(ILogger<HomeController> logger)
+
+        public HomeController(HospitalDbContext hospitalDbContext)
         {
-            _logger = logger;
+            this.hospitalDbContext = hospitalDbContext;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var list = hospitalDbContext.Admins.Include(a => a.AppUser); 
+            return Json(list);
         }
 
         public IActionResult Privacy()

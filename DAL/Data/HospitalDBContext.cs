@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using DAL.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,5 +22,15 @@ namespace DAL.Data
             base.OnConfiguring(optionsBuilder);
             optionsBuilder.UseSqlServer("server = .; Database = hospital; Trusted_Connection = true; TrustServerCertificate = true; MultipleActiveResultSets = true;");
         }
+
+        public DbSet<Department> Departments { get; set; }
+        public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<Admin> Admins { get; set; }
+        public DbSet<Patient> Patients { get; set; }
+
+        public DbSet<Nurse> Nurses { get; set; }
+        public DbSet<MedicalRecord> MedicalRecords { get; set; }
+        public DbSet<Drug> Drugs { get; set; }
+        public DbSet<NursePatient> NursesPatients { get;set; }
     }
 }
