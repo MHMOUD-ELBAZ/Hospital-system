@@ -1,4 +1,7 @@
+using BLL.Interfaces;
+using BLL.Repositories;
 using DAL.Data;
+using System.ComponentModel.DataAnnotations;
 
 namespace Hospital_Project_01
 {
@@ -8,13 +11,17 @@ namespace Hospital_Project_01
         {
             var builder = WebApplication.CreateBuilder(args);
 
+
             #region register services
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-            builder.Services.AddDbContext<HospitalDbContext>(); 
+            builder.Services.AddDbContext<HospitalDbContext>();
+            builder.Services.AddScoped<IDoctorRepository, DoctorRepository>(); 
 
             #endregion
+
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

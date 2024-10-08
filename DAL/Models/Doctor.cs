@@ -38,7 +38,7 @@ public partial class Doctor
 
     public int? DepartmentId { get; set; }
 
-    public AppUser AppUser { get; set; }
+    public AppUser? AppUser { get; set; }
 
     [InverseProperty("Doctor")]
     public virtual ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();

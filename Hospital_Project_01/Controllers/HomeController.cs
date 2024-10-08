@@ -1,4 +1,6 @@
+using BLL.Interfaces;
 using DAL.Data;
+using DAL.Models;
 using Hospital_Project_01.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,18 +10,17 @@ namespace Hospital_Project_01.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly HospitalDbContext hospitalDbContext;
+        private readonly IDoctorRepository _doctorRepository;
 
-
-        public HomeController(HospitalDbContext hospitalDbContext)
+        public HomeController(IDoctorRepository genericRepository)
         {
-            this.hospitalDbContext = hospitalDbContext;
+            _doctorRepository = genericRepository;
         }
 
         public IActionResult Index()
         {
-            var list = hospitalDbContext.Admins.Include(a => a.AppUser); 
-            return Json(list);
+            var doc = _doctorRepository.Get(1);
+            return Json(doc);
         }
 
         public IActionResult Privacy()
