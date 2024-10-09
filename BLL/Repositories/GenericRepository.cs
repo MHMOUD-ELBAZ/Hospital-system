@@ -25,5 +25,6 @@ namespace BLL.Repositories
 
         public void Update(T entity) => _context.Set<T>().Update(entity);  
 
+        public int Save() => _context.SaveChanges();
     }
 }

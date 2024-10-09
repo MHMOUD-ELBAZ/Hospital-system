@@ -11,5 +11,9 @@ namespace BLL.Interfaces
         Doctor? GetDoctorWithAppointments(int doctorId);
 
         Doctor? GetDoctorWithDepartment(int doctorId);
+
+        IEnumerable<Doctor> GetDoctorsInDept(int departmentId);
+
+        IEnumerable<Doctor> GetDoctorsInDept(int departmentId, Shift shift);
     }
 }

@@ -3,7 +3,7 @@ using BLL.Repositories;
 using DAL.Data;
 using System.ComponentModel.DataAnnotations;
 
-namespace Hospital_Project_01
+namespace PL
 {
     public class Program
     {
@@ -18,6 +18,15 @@ namespace Hospital_Project_01
 
             builder.Services.AddDbContext<HospitalDbContext>();
             builder.Services.AddScoped<IDoctorRepository, DoctorRepository>(); 
+            builder.Services.AddScoped<IPatientRepository, PatientRepository>(); 
+            builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>(); 
+            builder.Services.AddScoped<INurseRepository, NurseRepository>(); 
+            builder.Services.AddScoped<INursePatientRepository, NursePatientRepository>(); 
+            builder.Services.AddScoped<IBillRepository, BillRepository>(); 
+            builder.Services.AddScoped<IDrugRepository, DrugRepository>(); 
+            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>(); 
+            builder.Services.AddScoped<IAdminRepository, AdminRepository>(); 
+            builder.Services.AddScoped<IMedicalRecordRepository, MedicalRecordRepository>(); 
 
             #endregion
 

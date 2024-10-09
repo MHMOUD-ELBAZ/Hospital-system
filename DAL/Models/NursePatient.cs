@@ -13,6 +13,9 @@ namespace DAL.Models;
 public partial class NursePatient
 {
     [Key]
+    public int Id { get; set; }
+
+    [Key]
     [Column("Nurse_Id")]
     public int NurseId { get; set; }
 

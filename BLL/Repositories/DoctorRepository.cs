@@ -2,6 +2,7 @@
 using DAL.Data;
 using DAL.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,5 +26,11 @@ namespace BLL.Repositories
         {
             return _context.Doctors.Where(d => d.Id == doctorId).Include(d => d.Department).FirstOrDefault();
         }
+
+        public IEnumerable<Doctor> GetDoctorsInDept(int departmentId, Shift shift)
+            => _context.Doctors.Where(d => d.DepartmentId == departmentId && d.Shift == shift);         
+        
+        public IEnumerable<Doctor> GetDoctorsInDept(int departmentId)
+            => _context.Doctors.Where(d => d.DepartmentId == departmentId); 
     }
 }

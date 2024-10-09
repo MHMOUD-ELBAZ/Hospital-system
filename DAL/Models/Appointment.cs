@@ -13,6 +13,9 @@ namespace DAL.Models;
 public partial class Appointment
 {
     [Key]
+    public int Id { get; set; }
+    
+    [Key]
     public int DoctorId { get; set; }
 
     [Key]
