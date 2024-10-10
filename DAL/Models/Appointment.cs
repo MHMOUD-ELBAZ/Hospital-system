@@ -21,6 +21,9 @@ public partial class Appointment
     [Key]
     public int PatientId { get; set; }
 
+    [Column(TypeName = "bit")]
+    public bool Finished { get; set; }
+
     [Column(TypeName = "datetime")]
     public DateTime? Date { get; set; }
 

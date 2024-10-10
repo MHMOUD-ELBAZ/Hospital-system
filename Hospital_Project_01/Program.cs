@@ -1,6 +1,8 @@
 using BLL.Interfaces;
 using BLL.Repositories;
 using DAL.Data;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
 namespace PL
@@ -10,9 +12,9 @@ namespace PL
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            
 
-
-            #region register services
+            #region register user-defined services
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
@@ -26,11 +28,22 @@ namespace PL
             builder.Services.AddScoped<IDrugRepository, DrugRepository>(); 
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>(); 
             builder.Services.AddScoped<IAdminRepository, AdminRepository>(); 
-            builder.Services.AddScoped<IMedicalRecordRepository, MedicalRecordRepository>(); 
+            builder.Services.AddScoped<IMedicalRecordRepository, MedicalRecordRepository>();
 
             #endregion
 
+            #region register identity services
 
+            builder.Services.AddIdentity<AppUser,IdentityRole>(options => 
+            {
+                options.Password.RequiredLength = 6; 
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;                
+            }).AddEntityFrameworkStores<HospitalDbContext>().AddDefaultTokenProviders();
+
+            builder.Services.AddAuthentication();
+
+            #endregion 
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

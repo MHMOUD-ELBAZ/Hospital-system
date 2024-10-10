@@ -16,15 +16,15 @@ public partial class Drug
 
     [StringLength(50)]
     [Unicode(false)]
-    public string? Name { get; set; }
+    public string Name { get; set; }
 
     [StringLength(50)]
     [Unicode(false)]
-    public string? Dose { get; set; }
+    public string Dose { get; set; }
 
     public int MedicalRecordId { get; set; }
 
     [ForeignKey("MedicalRecordId")]
     [InverseProperty("Drugs")]
-    public virtual MedicalRecord MedicalRecord { get; set; } = null!;
+    public virtual MedicalRecord? MedicalRecord { get; set; } 
 }

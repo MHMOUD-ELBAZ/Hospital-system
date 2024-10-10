@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Appointment>
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Daily schedule";
+}
+
+
+<div class="text-center">
+    <h1>Daily schedule</h1>
+    <hr class="border border-info" />
+</div>
+
+
+
+
+<br />
+
+@if (!Model.Any())
+{
+    <div>
+        <h2 class="alert alert-danger">No appointments for now</h2>
+    </div>
+}
+else
+{
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Appointment</th>
+                <th>Patient ID</th>
+                <th>Finished</th>
+                <th>Time</th>
+                <th>Meet now</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var appointment in Model)
+            {
+                <tr>
+                    <td>@appointment.Id</td>
+                    <td>@appointment.PatientId</td>
+                    @if (appointment.Finished)
+                    {
+                        <td>Finished</td>
+                    }
+                    else
+                    {
+                        <td>Not finished</td>
+                    }
+                    <td>@appointment.Date</td>
+                    <td>
+                        <a asp-controller="Appointment" asp-action="AppointmentDetails" asp-route-appointmentId="@appointment.Id" class="btn btn-dark">
+                            <i class="bi bi-eye-fill"></i> Details
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+
+
+}

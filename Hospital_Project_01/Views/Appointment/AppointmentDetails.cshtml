@@ -1,0 +1,81 @@
+﻿
+@{
+    ViewData["Title"] = "Appointment Details";
+}
+
+@model AppointmentDetailsVM
+
+<div class="container">
+    <h2 class="text-center mt-4">Appointment Details</h2>
+
+    <!-- Appointment Information -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4>Appointment Information</h4>
+        </div>
+        <div class="card-body">
+            <p><strong>Appointment ID:</strong> @Model.Id</p>
+            <p><strong>Date:</strong> @Model.Date</p>
+            <p><strong>Status:</strong> <span class="badge @(Model.Finished ? "bg-success" : "bg-warning")">@((Model.Finished) ? "Finished" : "Pending")</span></p>
+        </div>
+    </div>
+
+    <!-- Patient Information -->
+    <div class="card mb-4">
+        <div class="card-header bg-info text-white">
+            <h4>Patient Information</h4>
+        </div>
+        <div class="card-body">
+            <p><strong>Patient Name:</strong> @Model.PatientName</p>
+            <p><strong>Age:</strong> @Model.PatientAge</p>
+            <p><strong>Medical History:</strong> @Model.History</p>
+        </div>
+    </div>
+
+    <!-- Medical Records -->
+    <div class="card">
+        <div class="card-header bg-secondary text-white">
+            <h4>Medical Records</h4>
+        </div>
+        <div class="card-body">
+            @if (Model.MedicalRecords != null && Model.MedicalRecords.Any())
+            {
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Record ID</th>
+                            <th>Diagnose</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var record in Model.MedicalRecords)
+                        {
+                            <tr>
+                                <td>@record.Id</td>
+                                <td>@record.Diagnose</td>
+                                <td>
+                                    <a asp-controller="MedicalRecord" asp-action = "Details" asp-route-recordId = "@record.Id" class="btn btn-outline-primary btn-sm">
+                                        View Details
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p class="text-muted">No medical records available.</p>
+            }
+            <div>
+                <a asp-controller="MedicalRecord" asp-action="Add" asp-route-patientId="@Model.PatientId" class="btn btn-outline-dark btn-sm">
+                    Add Record   
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

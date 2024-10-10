@@ -1,7 +1,7 @@
 using BLL.Interfaces;
 using DAL.Data;
 using DAL.Models;
-using PL.Models;
+using PL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
