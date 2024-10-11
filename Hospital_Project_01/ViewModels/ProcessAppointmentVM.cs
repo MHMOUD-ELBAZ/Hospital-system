@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace PL.ViewModels
 {
-    public class AppointmentDetailsVM
+    public class ProcessAppointmentVM
     {
         [Display(Name = "Appointment ID")]
         public int Id { get; set; }

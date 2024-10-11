@@ -1,0 +1,53 @@
+﻿@model Doctor
+
+@{
+    ViewData["Title"] = "Doctor Details";
+}
+
+<h2>Doctor Details</h2>
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">@Model.Name</h4>
+
+        <div class="mb-3">
+            <strong>Age:</strong>
+            <p>@Model.Age</p>
+        </div>
+
+        <div class="mb-3">
+            <strong>Address:</strong>
+            <p>@Model.Address </p>
+        </div>
+
+        <div class="mb-3">
+            <strong>Salary:</strong>
+            <p>@Model.Salary?.ToString("C") </p>
+        </div>
+
+        <div class="mb-3">
+            <strong>Rank:</strong>
+            <p>@Model.Rank.ToString() </p>
+        </div>
+
+        <div class="mb-3">
+            <strong>Shift:</strong>
+            <p>@Model.Shift.ToString()</p>
+        </div>
+
+        <div class="mb-3">
+            <strong>Department:</strong>
+            <p>@Model.Department?.Name </p>
+        </div>
+
+        <div class="mb-3">
+            <strong>User Account:</strong>
+            <p>@Model.AspNetUsersId</p>
+        </div>
+
+
+        <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-primary">Edit</a>
+        <a href="@Url.Action("Delete", new { id = Model.Id })" class="btn btn-danger">Delete</a>
+        <a href="@Url.Action("Index")" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>

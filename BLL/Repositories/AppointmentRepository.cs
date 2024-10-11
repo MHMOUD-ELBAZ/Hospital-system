@@ -17,9 +17,6 @@ namespace BLL.Repositories
         {
         }
 
-        public new Appointment? Get(int id) 
-            => _context.Appointments.Where(a => a.Id == id).FirstOrDefault();
-
         public IEnumerable<Appointment>? GetAppointments(int doctorId, int patientId)
             => _context.Appointments.Where(a => a.DoctorId == doctorId && a.PatientId == patientId);  
 
@@ -35,5 +32,14 @@ namespace BLL.Repositories
         
         public Appointment? GetAppointmentWithPatient(int appointmentId)
             => _context.Appointments.Include(a => a.Patient).Where(a => a.Id == appointmentId).FirstOrDefault();
+
+        public IEnumerable<Appointment>? GetUpcomingAppointments()
+            => _context.Appointments.Where(a => a.Date >= DateTime.Today);
+
+        public IEnumerable<Appointment> GetAppointmentsByDate(DateTime date)
+           => _context.Appointments.Where(a => a.Date.HasValue && a.Date.Value.Date == date.Date);
+
+        public Appointment? GetAppointmentWithDoctor(int appointmentId)
+            => _context.Appointments.Include(a => a.Doctor).FirstOrDefault(a => a.Id == appointmentId);
     }
 }

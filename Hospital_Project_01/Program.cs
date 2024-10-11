@@ -1,8 +1,10 @@
 using BLL.Interfaces;
 using BLL.Repositories;
 using DAL.Data;
+using DAL.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace PL
@@ -12,11 +14,11 @@ namespace PL
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            
 
-            #region register user-defined services
-            // Add services to the container.
-            builder.Services.AddControllersWithViews();
+
+			#region register user-defined services
+			// Add services to the container.
+			builder.Services.AddControllersWithViews();
 
             builder.Services.AddDbContext<HospitalDbContext>();
             builder.Services.AddScoped<IDoctorRepository, DoctorRepository>(); 

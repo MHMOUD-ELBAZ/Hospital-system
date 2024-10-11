@@ -19,7 +19,7 @@ public partial class Doctor
     [Unicode(false)]
     public string Name { get; set; } = null!;
 
-    public int? Age { get; set; }
+    public int Age { get; set; }
 
     [StringLength(50)]
     [Unicode(false)]
@@ -28,15 +28,15 @@ public partial class Doctor
     [Column(TypeName = "decimal(8, 2)")]
     public decimal? Salary { get; set; }
 
-    public DoctorsRank? Rank { get; set; }
+    public DoctorsRank Rank { get; set; }
 
-    public Shift? Shift { get; set; }
+    public Shift Shift { get; set; }
 
     [StringLength(450)]
     [ForeignKey(nameof(AppUser))]
     public string? AspNetUsersId { get; set; }
 
-    public int? DepartmentId { get; set; }
+    public int DepartmentId { get; set; }
 
     public AppUser? AppUser { get; set; }
 

@@ -19,7 +19,7 @@ public partial class Patient
     [Unicode(false)]
     public string Name { get; set; } = null!;
 
-    public int? Age { get; set; }
+    public int Age { get; set; }
 
     [StringLength(50)]
     [Unicode(false)]
@@ -30,18 +30,19 @@ public partial class Patient
 
     [StringLength(450)]
     [ForeignKey(nameof(AppUser))]
-    public string? AspNetUsersId { get; set; }
-    public AppUser AppUser { get; set; }
+    public string AspNetUsersId { get; set; }
+
+    public AppUser? AppUser { get; set; }
 
     [InverseProperty("Patient")]
-    public virtual ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
+    public virtual ICollection<Appointment>? Appointments { get; set; }
 
     [InverseProperty("Patient")]
-    public virtual ICollection<Bill> Bills { get; set; } = new List<Bill>();
+    public virtual ICollection<Bill>? Bills { get; set; }
 
     [InverseProperty("Patient")]
-    public virtual ICollection<MedicalRecord> MedicalRecords { get; set; } = new List<MedicalRecord>();
+    public virtual ICollection<MedicalRecord>? MedicalRecords { get; set; } 
 
     [InverseProperty("Patient")]
-    public virtual ICollection<NursePatient> NursePatients { get; set; } = new List<NursePatient>();
+    public virtual ICollection<NursePatient>? NursePatients { get; set; }
 }

@@ -8,30 +8,28 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Models;
 
-[PrimaryKey("DoctorId", "PatientId")]
+
 [Table("Appointment")]
 public partial class Appointment
 {
-    [Key]
+    [Key]  
     public int Id { get; set; }
-    
-    [Key]
+
     public int DoctorId { get; set; }
 
-    [Key]
     public int PatientId { get; set; }
 
     [Column(TypeName = "bit")]
-    public bool Finished { get; set; }
+    public bool Finished { get; set; } = false;
 
     [Column(TypeName = "datetime")]
     public DateTime? Date { get; set; }
 
     [ForeignKey("DoctorId")]
     [InverseProperty("Appointments")]
-    public virtual Doctor Doctor { get; set; } = null!;
+    public virtual Doctor? Doctor { get; set; } 
 
     [ForeignKey("PatientId")]
     [InverseProperty("Appointments")]
-    public virtual Patient Patient { get; set; } = null!;
+    public virtual Patient? Patient { get; set; } 
 }

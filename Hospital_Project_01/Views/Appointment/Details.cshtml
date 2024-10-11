@@ -1,0 +1,42 @@
+﻿@model Appointment
+
+@{
+    ViewData["Title"] = "Appointment Details";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center">Appointment Details</h2>
+
+    <div class="card mt-4">
+        <div class="card-header bg-success text-white">
+            <h4>Appointment Details</h4>
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                <label><strong>Appointment ID:</strong></label>
+                <p>@Model.Id</p>
+            </div>
+            <div class="form-group">
+                <label><strong>Doctor ID:</strong></label>
+                <p>@Model.DoctorId</p>
+            </div>
+            <div class="form-group">
+                <label><strong>Patient ID:</strong></label>
+                <p>@Model.PatientId</p>
+            </div>
+            <div class="form-group">
+                <label><strong>Appointment Date:</strong></label>
+                <p>@Model.Date?</p>
+            </div>
+            <div class="form-group">
+                <label><strong>Finished:</strong></label>
+                <p>@(Model.Finished ? "Yes" : "No")</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="text-center mt-3">
+        <a asp-action="Index" class="btn btn-secondary">All Appointments</a>
+    </div>
+</div>

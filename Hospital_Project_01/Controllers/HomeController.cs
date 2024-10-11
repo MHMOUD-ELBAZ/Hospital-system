@@ -10,21 +10,14 @@ namespace PL.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IDoctorRepository _doctorRepository;
-        private readonly INursePatientRepository _nursePatientRepository;
-        private readonly IAppointmentRepository appointmentRepository;
-
-        public HomeController(IDoctorRepository genericRepository, INursePatientRepository nursePatientRepository, IAppointmentRepository appointmentRepository)
+        public HomeController()
         {
-            _doctorRepository = genericRepository;
-            _nursePatientRepository = nursePatientRepository;
-            this.appointmentRepository = appointmentRepository;
+
         }
 
         public IActionResult Index()
         {
-            var doc = appointmentRepository.Get(1);
-            return Json(doc);
+            return View();
         }
 
         public IActionResult Privacy()
