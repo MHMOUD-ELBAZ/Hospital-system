@@ -11,6 +11,8 @@ namespace BLL.Interfaces
     {
         Patient? GetPatientWithMedicalRecords(int patientId);
         Patient? GetPatientWithAppointments(int patientId);
-        Patient? GetPatientWithNurses(int patientId); 
+        Patient? GetPatientWithNurses(int patientId);
+
+        Patient? GetByAspUsersId(string id);
     }
 }

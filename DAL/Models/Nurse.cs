@@ -17,21 +17,23 @@ public partial class Nurse
 
     [StringLength(40)]
     [Unicode(false)]
-    public string Name { get; set; } = null!;
+    public string Name { get; set; } 
 
-    public int? Age { get; set; }
+    public int Age { get; set; }
 
     [StringLength(50)]
     [Unicode(false)]
     public string? Address { get; set; }
 
-    public Shift? Shift { get; set; }
+    public Shift Shift { get; set; }
+
+    public decimal Salary { get; set; }
 
     [StringLength(450)]
     [ForeignKey(nameof(AppUser))]
-    public string? AspNetUsersId { get; set; }
-    public AppUser AppUser { get; set; }
+    public string AspNetUsersId { get; set; }
+    public AppUser? AppUser { get; set; }
 
     [InverseProperty("Nurse")]
-    public virtual ICollection<NursePatient> NursePatients { get; set; } = new List<NursePatient>();
+    public virtual ICollection<NursePatient>? NursePatients { get; set; }
 }

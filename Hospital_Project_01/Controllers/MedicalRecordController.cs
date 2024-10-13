@@ -1,5 +1,6 @@
 ﻿using BLL.Interfaces;
 using DAL.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using PL.ViewModels;
@@ -15,14 +16,25 @@ namespace PL.Controllers
             _medicalRecordRepository = medicalRecordRepository;
         }
 
-        public IActionResult Index(int patientId)
-        {
+        
+        [Authorize(Roles = "Admin, Patient, Doctor")]
+        public IActionResult Index(int? patientId)
+        {            
+            if (User.IsInRole("Patient"))
+            {
+                patientId = int.Parse(User.FindFirst("id").Value);
+            }
+            
+            if(patientId == null ) return View();
+
             ViewBag.PatientId = patientId;
-            return View(_medicalRecordRepository.GetPatientRecords(patientId));
+            return View(_medicalRecordRepository.GetPatientRecords(patientId.Value));
         }
+
 
         #region Details
         [HttpGet]
+        [Authorize(Roles = "Admin, Patient, Doctor")]
         public IActionResult Details(int recordId) 
         { 
             MedicalRecord? record = _medicalRecordRepository.GetRecordWithDrugs(recordId);
@@ -33,9 +45,11 @@ namespace PL.Controllers
         }
         #endregion
 
+
         #region Add record
 
         [HttpGet]
+        [Authorize(Roles = "Admin, Doctor")]
         public IActionResult Add(int patientId)
         {
             AddRecordVM vm = new AddRecordVM() { PatientId = patientId };
@@ -43,6 +57,7 @@ namespace PL.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin, Doctor")]
         public IActionResult Add(AddRecordVM recordVM)
         {
             if (!ModelState.IsValid) return View(recordVM);
@@ -65,7 +80,9 @@ namespace PL.Controllers
 
         #endregion
 
+
         #region Delete record
+        [Authorize(Roles = "Admin, Doctor")]
         public IActionResult Delete(int recordId) 
         {
             MedicalRecord? record = _medicalRecordRepository.GetRecordWithDrugs(recordId);
@@ -76,6 +93,7 @@ namespace PL.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin, Doctor")]
         public IActionResult Delete(MedicalRecord record)
         {
             if(!ModelState.IsValid) return BadRequest(ModelState);

@@ -30,5 +30,12 @@ namespace BLL.Repositories
         {
             return _context.Patients.Where(p => p.Id == patientId).Include(p => p.NursePatients).FirstOrDefault();
         }
+
+        public Patient? GetByAspUsersId(string id)
+        { 
+            return _context.Patients.FirstOrDefault(a => a.AspNetUsersId == id);
+        }
+
+       
     }
 }

@@ -34,7 +34,7 @@ public partial class Doctor
 
     [StringLength(450)]
     [ForeignKey(nameof(AppUser))]
-    public string? AspNetUsersId { get; set; }
+    public string AspNetUsersId { get; set; }
 
     public int DepartmentId { get; set; }
 

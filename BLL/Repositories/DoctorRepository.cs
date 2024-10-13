@@ -31,6 +31,11 @@ namespace BLL.Repositories
             => _context.Doctors.Where(d => d.DepartmentId == departmentId && d.Shift == shift);         
         
         public IEnumerable<Doctor> GetDoctorsInDept(int departmentId)
-            => _context.Doctors.Where(d => d.DepartmentId == departmentId); 
+            => _context.Doctors.Where(d => d.DepartmentId == departmentId);
+
+        public Doctor? GetByAspUsersId(string id) 
+        {
+            return _context.Doctors.Where(d => d.AspNetUsersId == id).FirstOrDefault();
+        }
     }
 }

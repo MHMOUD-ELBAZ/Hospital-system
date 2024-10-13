@@ -9,6 +9,6 @@ namespace BLL.Interfaces
 {
     public interface IAdminRepository : IGenericRepository<Admin>
     {
-
+        Admin? GetByAspUsersId(string id);
     }
 }

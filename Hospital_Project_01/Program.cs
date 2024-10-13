@@ -40,12 +40,25 @@ namespace PL
             {
                 options.Password.RequiredLength = 6; 
                 options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;                
+                options.Password.RequireUppercase = false; 
+                options.User.RequireUniqueEmail = true;
             }).AddEntityFrameworkStores<HospitalDbContext>().AddDefaultTokenProviders();
 
-            builder.Services.AddAuthentication();
+
+
+            builder.Services.AddAuthentication("Cookies")
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/Account/Login";  
+                options.AccessDeniedPath = "/Account/AccessDenied"; 
+                options.Cookie.HttpOnly = true;  // Mitigate XSS attacks
+                options.ExpireTimeSpan = TimeSpan.FromHours(12);  // Set expiration for the cookie
+                options.SlidingExpiration = true;  // Extend expiration when user is active
+            });
 
             #endregion 
+
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -61,6 +74,7 @@ namespace PL
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

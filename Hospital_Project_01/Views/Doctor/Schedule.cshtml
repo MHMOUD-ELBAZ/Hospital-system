@@ -51,7 +51,7 @@ else
                     }
                     <td>@appointment.Date</td>
                     <td>
-                        <a asp-controller="Appointment" asp-action="AppointmentDetails" asp-route-appointmentId="@appointment.Id" class="btn btn-dark">
+                        <a asp-controller="Appointment" asp-action="Details" asp-route-appointmentId="@appointment.Id" class="btn btn-dark">
                             <i class="bi bi-eye-fill"></i> Details
                         </a>
                         <a asp-controller="Appointment" asp-action="ProcessAppointment" asp-route-appointmentId="@appointment.Id" class="btn btn-success">

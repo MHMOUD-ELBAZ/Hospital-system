@@ -5,18 +5,35 @@ using PL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Identity;
 
 namespace PL.Controllers
 {
     public class HomeController : Controller
     {
-        public HomeController()
-        {
+        private readonly RoleManager<IdentityRole> _roleManager;
 
+        public HomeController(RoleManager<IdentityRole> roleManager)
+        {
+            _roleManager = roleManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole("Patient"))
+                    return RedirectToAction("Index", "Patient");
+
+                if (User.IsInRole("Doctor"))
+                    return RedirectToAction("Index", "Doctor");
+
+                if (User.IsInRole("Admin"))
+                    return RedirectToAction("Dashboard", "Admin");
+
+                return View("Dashboard"); 
+            }
+
             return View();
         }
 

@@ -10,5 +10,6 @@ namespace BLL.Interfaces
     public interface IBillRepository : IGenericRepository<Bill>
     {
         Bill? GetBillWithPatient(int billId);
+        IEnumerable<Bill>? GetBillsForPatient(int patientId);
     }
 }

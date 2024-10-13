@@ -8,18 +8,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Models;
 
-[PrimaryKey("NurseId", "PatientId")]
+
 [Table("Nurse_Patient")]
 public partial class NursePatient
 {
     [Key]
     public int Id { get; set; }
 
-    [Key]
     [Column("Nurse_Id")]
     public int NurseId { get; set; }
 
-    [Key]
     [Column("Patient_Id")]
     public int PatientId { get; set; }
 

@@ -15,5 +15,6 @@ namespace BLL.Interfaces
         IEnumerable<Doctor> GetDoctorsInDept(int departmentId);
 
         IEnumerable<Doctor> GetDoctorsInDept(int departmentId, Shift shift);
+         Doctor? GetByAspUsersId(string id);
     }
 }

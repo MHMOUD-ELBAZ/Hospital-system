@@ -15,11 +15,13 @@ public partial class Bill
     public int Id { get; set; }
 
     [Column(TypeName = "decimal(7, 2)")]
-    public decimal? Amount { get; set; }
+    public decimal Amount { get; set; }
 
-    public DateOnly? Date { get; set; }
+    public DateOnly Date { get; set; }
 
-    public int? PatientId { get; set; }
+    public bool Paid { get; set; } = false; 
+
+    public int PatientId { get; set; }
 
     [ForeignKey("PatientId")]
     [InverseProperty("Bills")]

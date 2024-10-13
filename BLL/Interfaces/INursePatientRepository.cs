@@ -12,5 +12,6 @@ namespace BLL.Interfaces
         NursePatient? GetNursePatientWithNurse(int id);
         NursePatient? GetNursePatientWithPatient(int id);
         NursePatient? GetNursePatientWithNurseAndPatient(int id);
+        IEnumerable<NursePatient>? GetUpcomingCares();
     }
 }

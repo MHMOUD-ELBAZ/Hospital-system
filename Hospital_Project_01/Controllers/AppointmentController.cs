@@ -1,9 +1,11 @@
 ﻿using BLL.Interfaces;
 using BLL.Repositories;
 using DAL.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PL.ViewModels;
+using System.Security.Claims;
 
 namespace PL.Controllers
 {
@@ -24,21 +26,34 @@ namespace PL.Controllers
         }
 
         #region Index, filters
-        public IActionResult Index()
+        [Authorize(Roles = "Admin, Doctor, Patient")]
+        public IActionResult Index(int? patientId)
         {
-            //if the user is doctor, redirect him to the doctor index
+            if (User.IsInRole("Patient"))
+            {
+                return RedirectToAction(nameof(FilterByPatientId));
+            }
 
             IEnumerable<Appointment>? appointments = _appointmentRepository.GetUpcomingAppointments();
             return View(appointments);
         }
 
+
+        [Authorize(Roles = "Admin, Doctor, Patient")]
         public IActionResult FilterByPatientId(int? id) 
         {
+            if (User.IsInRole("Patient"))
+            {
+                int patientId = int.Parse(User.FindFirstValue("id"));
+                return View(nameof(Index) , _appointmentRepository.GetAppointmentsForPatient(patientId));
+            }
+
             if(id == null) return RedirectToAction(nameof(Index));
             
             return View(nameof(Index) , _appointmentRepository.GetAppointmentsForPatient(id.Value));
         }
 
+        [Authorize(Roles = "Admin, Doctor")]
         public IActionResult FilterByDate(DateTime? date)
         {
             if(date is null) return RedirectToAction(nameof(Index));
@@ -49,11 +64,13 @@ namespace PL.Controllers
 
         #endregion
 
+
         #region Details
+        [Authorize(Roles = "Admin, Doctor, Patient")]
         public IActionResult Details(int appointmentId)
         {
-            Appointment? appointment = _appointmentRepository.Get(appointmentId);
-
+            Appointment? appointment = _appointmentRepository.GetAppointmentWithDoctor(appointmentId); 
+            
             if (appointment == null) return NotFound();
 
             return View(appointment);
@@ -63,6 +80,7 @@ namespace PL.Controllers
 
 
         #region Process Appointment
+        [Authorize(Roles = "Admin, Doctor")]
         public IActionResult ProcessAppointment (int  appointmentId)
         {
             Appointment? appointment = _appointmentRepository.Get(appointmentId);
@@ -87,6 +105,7 @@ namespace PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Doctor")]
         public IActionResult ProcessAppointment(ProcessAppointmentVM appointmentVM)
         {
             // Retrieve the appointment based on the ID
@@ -117,6 +136,7 @@ namespace PL.Controllers
 
 
         #region Edit
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(int id)
         {
             var appointment = _appointmentRepository.GetAppointmentWithDoctor(id);
@@ -138,6 +158,7 @@ namespace PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult EditAppointment(EditAppointmentVM appointmentVM)
         {
             if (!ModelState.IsValid)
@@ -169,18 +190,27 @@ namespace PL.Controllers
 
 
         #region Add Appointment
+        [Authorize(Roles = "Admin")]
         public IActionResult Add(AddAppointmentVM appointmentVM)
         {
             var depts = _departmentRepository.GetAll();
             ViewBag.Departments = depts;
-            return View("Add",appointmentVM);
+
+            appointmentVM.Date = DateTime.Now;
+            return View(appointmentVM);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult AddAppointment(AddAppointmentVM appointmentVM)
         {
-            if (!ModelState.IsValid) return Add(appointmentVM);
+            if (!ModelState.IsValid)
+            {
+                var depts = _departmentRepository.GetAll();
+                ViewBag.Departments = depts;
+                return View(nameof(Add),appointmentVM);
+            }
 
             if(_patientRepository.Get(appointmentVM.PatientId) is null)
             {
@@ -214,6 +244,7 @@ namespace PL.Controllers
 
 
         #region Delete 
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             var appointment = _appointmentRepository.Get(id); 
@@ -228,6 +259,7 @@ namespace PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(Appointment appointment)
         {
             if(!ModelState.IsValid) return BadRequest(ModelState);

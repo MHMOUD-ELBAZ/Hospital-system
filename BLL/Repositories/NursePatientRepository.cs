@@ -30,5 +30,8 @@ namespace BLL.Repositories
         public NursePatient? GetNursePatientWithPatient(int id)
             => _context.NursesPatients.Include(NP => NP.Patient).FirstOrDefault(NP => NP.Id == id);
 
+        public IEnumerable<NursePatient>? GetUpcomingCares()
+            => _context.NursesPatients.Where(np => np.CareDate >= DateOnly.FromDayNumber(0)); 
+
     }
 }

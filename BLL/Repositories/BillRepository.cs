@@ -18,5 +18,9 @@ namespace BLL.Repositories
 
         public Bill? GetBillWithPatient(int billId)
             => _context.Bills.Include(b => b.Patient).FirstOrDefault(b => b.Id == billId);
+
+        public IEnumerable<Bill>? GetBillsForPatient(int patientId)
+            => _context.Bills.Where(b => b.PatientId == patientId); 
+
     }
 }

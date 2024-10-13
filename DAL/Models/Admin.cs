@@ -29,5 +29,5 @@ public partial class Admin
     [ForeignKey(nameof(AppUser))]
     public string? AspNetUsersId { get; set; }
 
-    public AppUser AppUser { get; set; }
+    public AppUser? AppUser { get; set; }
 }

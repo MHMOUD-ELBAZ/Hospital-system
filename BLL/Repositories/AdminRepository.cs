@@ -14,5 +14,10 @@ namespace BLL.Repositories
         public AdminRepository(HospitalDbContext dbContext) : base(dbContext)
         {
         }
+
+        public Admin? GetByAspUsersId(string id)
+        {
+            return _context.Admins.FirstOrDefault(a => a.AspNetUsersId == id);
+        }
     }
 }

@@ -2,21 +2,24 @@
 using BLL.Repositories;
 using DAL.Data;
 using DAL.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Query;
 using PL.ViewModels;
+using System.Security.Claims;
 
 namespace PL.Controllers
 {
+
     public class DoctorController : Controller
     {
         private readonly IDoctorRepository _doctorRepository;
         private readonly IAppointmentRepository _appointmentRepository;
         private readonly IDepartmentRepository _departmentRepository;
         private readonly UserManager<AppUser> _userManager;
-
-        public DoctorController(IDoctorRepository doctorRepository, IAppointmentRepository appointmentRepository, 
+         
+        public DoctorController(IDoctorRepository doctorRepository, IAppointmentRepository appointmentRepository,
             IDepartmentRepository departmentRepository, UserManager<AppUser> userManager)
         {
             _doctorRepository = doctorRepository;
@@ -25,14 +28,20 @@ namespace PL.Controllers
             _userManager = userManager;
         }
 
+
+        [Authorize(Roles = "Admin, Doctor")]
         public IActionResult Index()
         {
-            //check if the user is in doctor role, redirect him to the schedule 
-
+            if (User.IsInRole("Doctor"))
+            {
+                int id = int.Parse(User.FindFirstValue("id"));
+                return RedirectToAction(nameof(Schedule), new {id});
+            }
             return View(_doctorRepository.GetAll());
         }
 
 
+        [Authorize(Roles = "Admin, Doctor")]
         public IActionResult Schedule(int id) 
         {
             IEnumerable<Appointment>? schedule = _appointmentRepository.GetDailyAppointmentsForDoctor(id);
@@ -45,6 +54,7 @@ namespace PL.Controllers
 
         #region Add . tested
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Add(AddDoctorVM? doctorVM)
         {
             // Retrieve any necessary data for the view, such as departments
@@ -56,12 +66,14 @@ namespace PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddDoctor(AddDoctorVM doctorVM)
         {
             if (!ModelState.IsValid)
-                return RedirectToAction(nameof(Index) , doctorVM); 
+                return RedirectToAction(nameof(Index) , doctorVM);
 
-            if(await _userManager.FindByIdAsync(doctorVM.AspNetUsersId) is null)
+            var user = await _userManager.FindByIdAsync(doctorVM.AspNetUsersId);
+            if(user is null)
             {
                 ModelState.AddModelError("AspNetUsersId", "Please register the doctor with a system account before proceeding.");
                 var departments = _departmentRepository.GetAll();
@@ -85,7 +97,7 @@ namespace PL.Controllers
             try
             {
                 _doctorRepository.Add(newDoctor);
-                _doctorRepository.Save();
+                await _userManager.AddToRoleAsync(user, "Doctor");
                 return RedirectToAction("Index");
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
@@ -96,6 +108,7 @@ namespace PL.Controllers
 
         #region Edit . tested
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(int id)
         {
             var doctor = _doctorRepository.Get(id);
@@ -120,7 +133,8 @@ namespace PL.Controllers
 
             return View(doctorVM);
         }
-
+        
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(AddDoctorVM doctorVM)
@@ -158,6 +172,7 @@ namespace PL.Controllers
 
 
         #region Delete . tested
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Delete(int id)
         {
@@ -167,18 +182,18 @@ namespace PL.Controllers
             return View(doctor);
         }
 
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(Doctor doctor)
+        public async Task<IActionResult> Delete(Doctor doctor)
         {
             if(!ModelState.IsValid) return BadRequest(ModelState);
 
             try
             {
-                _doctorRepository.Delete(doctor);
-                _doctorRepository.Save();
-                return RedirectToAction("Index");
+                //The delete action is CASCADE 
+                await _userManager.DeleteAsync(await _userManager.FindByIdAsync(doctor.AspNetUsersId));
+                return RedirectToAction(nameof(Index));
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
         }
@@ -186,7 +201,7 @@ namespace PL.Controllers
 
 
         #region Details . tested
-
+        [Authorize(Roles = "Admin")]
         public IActionResult Details(int id) 
         {
             var doctor = _doctorRepository.GetDoctorWithDepartment(id);
