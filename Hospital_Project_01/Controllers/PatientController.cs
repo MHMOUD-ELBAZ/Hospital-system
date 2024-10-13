@@ -21,6 +21,7 @@ public class PatientController : Controller
         _userManager = userManager;
     }
 
+
     [Authorize(Roles = "Admin, Patient")]
     public IActionResult Index()
     {

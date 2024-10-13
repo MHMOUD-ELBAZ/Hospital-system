@@ -44,11 +44,21 @@ namespace PL.Controllers
         [Authorize(Roles = "Admin, Doctor")]
         public IActionResult Schedule(int id) 
         {
+            var doctor = _doctorRepository.Get(id);
+            if (doctor == null) return NotFound();
+
             IEnumerable<Appointment>? schedule = _appointmentRepository.GetDailyAppointmentsForDoctor(id);
+            var viewModel = new DoctorScheduleViewModel
+            {
+                Doctor = doctor,
+                Appointments = schedule,
+                TotalAppointments = schedule.Count(),
+                FinishedAppointments = schedule.Count(a => a.Finished),
+                PendingAppointments = schedule.Count(a => !a.Finished)
+            };
 
-            if (schedule == null) return NotFound();
 
-            return View(schedule);
+            return View(viewModel);
         }
 
 

@@ -7,7 +7,7 @@ using PL.ViewModels;
 
 namespace PL.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    
     public class BillController : Controller
     {
         private readonly IBillRepository _billRepository;
@@ -41,7 +41,8 @@ namespace PL.Controllers
 
 
         [HttpPost]
-		public IActionResult MarkAsPaid(int id)
+        [Authorize(Roles = "Admin")]
+        public IActionResult MarkAsPaid(int id)
 		{
 			var bill = _billRepository.Get(id);
 			if (bill == null) return NotFound();
@@ -56,6 +57,7 @@ namespace PL.Controllers
 
 		#region Add . tested
 		[HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Add()
         {
             return View();
@@ -63,6 +65,7 @@ namespace PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Add(BillAddVM bill)
         {
             if (!ModelState.IsValid)
@@ -92,6 +95,7 @@ namespace PL.Controllers
 
         #region Edit .. tested
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(int id)
         {
             var bill = _billRepository.Get(id);
@@ -110,6 +114,7 @@ namespace PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(BillEditVM bill)
         {
             if (!ModelState.IsValid)
@@ -132,6 +137,7 @@ namespace PL.Controllers
 
         #region Delete . tested
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             var bill = _billRepository.GetBillWithPatient(id);
@@ -142,6 +148,7 @@ namespace PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(Bill bill)
         {
             if (!ModelState.IsValid) return View(bill);

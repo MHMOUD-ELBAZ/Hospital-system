@@ -2,6 +2,7 @@
 using BLL.Repositories;
 using DAL.Data;
 using DAL.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Packaging.Core;
@@ -9,6 +10,7 @@ using PL.ViewModels;
 
 namespace PL.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class NurseController : Controller
     {
         private readonly INurseRepository _nurseRepository;
