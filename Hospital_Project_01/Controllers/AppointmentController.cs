@@ -25,6 +25,7 @@ namespace PL.Controllers
             _doctorRepository = doctorRepository;
         }
 
+
         #region Index, filters
         [Authorize(Roles = "Admin, Doctor, Patient")]
         public IActionResult Index(int? patientId)
@@ -214,8 +215,10 @@ namespace PL.Controllers
 
             if(_patientRepository.Get(appointmentVM.PatientId) is null)
             {
-                ModelState.AddModelError("PatientId", "No patient registered with this ID"); 
-                return Add(appointmentVM);
+                ModelState.AddModelError("PatientId", "No patient registered with this ID");
+                var depts = _departmentRepository.GetAll();
+                ViewBag.Departments = depts;
+                return View(nameof(Add), appointmentVM);
             } 
 
             Appointment entity = new Appointment() { 

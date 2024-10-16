@@ -11,14 +11,8 @@ namespace PL.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public HomeController(RoleManager<IdentityRole> roleManager)
-        {
-            _roleManager = roleManager;
-        }
-
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             if (User.Identity.IsAuthenticated)
             {

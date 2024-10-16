@@ -71,7 +71,7 @@ namespace PL.Controllers
             var departments = _departmentRepository.GetAll();
             ViewBag.Departments = departments;
 
-            return doctorVM is null ? View(doctorVM) : View();
+            return doctorVM != null ? View(doctorVM) : View();
         }
 
         [HttpPost]

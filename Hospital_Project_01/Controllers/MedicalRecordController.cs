@@ -10,10 +10,12 @@ namespace PL.Controllers
     public class MedicalRecordController : Controller
     {
         private readonly IMedicalRecordRepository _medicalRecordRepository;
+        private readonly IPatientRepository _patientRepository;
 
-        public MedicalRecordController(IMedicalRecordRepository medicalRecordRepository)
+        public MedicalRecordController(IMedicalRecordRepository medicalRecordRepository, IPatientRepository patientRepository)
         {
             _medicalRecordRepository = medicalRecordRepository;
+            this._patientRepository = patientRepository;
         }
 
         
@@ -61,6 +63,14 @@ namespace PL.Controllers
         public IActionResult Add(AddRecordVM recordVM)
         {
             if (!ModelState.IsValid) return View(recordVM);
+
+            var patient = _patientRepository.Get(recordVM.PatientId);
+
+            if(patient == null)
+            {
+                ModelState.AddModelError("PatientId", "Patient ID not found.");
+                return View(recordVM);
+            }
 
             MedicalRecord record = new MedicalRecord()
             {

@@ -20,7 +20,9 @@ namespace PL
 			// Add services to the container.
 			builder.Services.AddControllersWithViews();
 
-            builder.Services.AddDbContext<HospitalDbContext>();
+            string connection = builder.Configuration.GetConnectionString("DefaultConnection");
+            builder.Services.AddDbContext<HospitalDbContext>(option => option.UseSqlServer(connection));
+
             builder.Services.AddScoped<IDoctorRepository, DoctorRepository>(); 
             builder.Services.AddScoped<IPatientRepository, PatientRepository>(); 
             builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>(); 
@@ -44,16 +46,14 @@ namespace PL
                 options.User.RequireUniqueEmail = true;
             }).AddEntityFrameworkStores<HospitalDbContext>().AddDefaultTokenProviders();
 
-
-
             builder.Services.AddAuthentication("Cookies")
             .AddCookie(options =>
             {
                 options.LoginPath = "/Account/Login";  
                 options.AccessDeniedPath = "/Account/AccessDenied"; 
-                options.Cookie.HttpOnly = true;  // Mitigate XSS attacks
+                options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromHours(12);  // Set expiration for the cookie
-                options.SlidingExpiration = true;  // Extend expiration when user is active
+                options.SlidingExpiration = true;  
             });
 
             #endregion 
