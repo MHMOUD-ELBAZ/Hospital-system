@@ -21,7 +21,6 @@ namespace DAL.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("server = .; Database = hospital; Trusted_Connection = true; TrustServerCertificate = true; MultipleActiveResultSets = true;");
         }
 
 		protected override void OnModelCreating(ModelBuilder builder)
